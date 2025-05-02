@@ -16,6 +16,20 @@ body {
   border: red;
 }
 
+.quote-container {
+    width: 90%;
+    height: 50%;
+}
+
+
+div>p>span {
+    margin: 10px;
+}
+
+div>p {
+    flex-wrap: wrap;
+}
+
 div, p {
     display: flex;
     justify-content: space-evenly;
