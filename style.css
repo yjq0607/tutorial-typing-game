@@ -1,0 +1,22 @@
+body {
+    font-size: 20px;
+    font-family: "Source Code Pro", monospace;
+    /* font-family: "Roboto Monoa", monospace; */
+    background: #e9e5cc;
+    color: #92946f;
+}
+
+
+.highlight {
+  background-color: yellow;
+}
+
+.error {
+  background-color: lightcoral;
+  border: red;
+}
+
+div, p {
+    display: flex;
+    justify-content: space-evenly;
+}
