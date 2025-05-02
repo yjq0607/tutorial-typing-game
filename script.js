@@ -1,5 +1,3 @@
-// inside script.js
-// all of our quotes
 const quotes = [
     'When you have eliminated the impossible, whatever remains, however improbable, must be the truth.',
     'There is nothing more deceptive than an obvious fact.',
@@ -8,49 +6,57 @@ const quotes = [
     'What one man can invent another can discover.',
     'Nothing clears up a case so much as stating it to another person.',
     'Education never ends, Watson. It is a series of lessons, with the greatest for the last.',
+    "Wake up to reality! Nothing ever goes as planned in this accursed world. The longer you live, the more you realize that the only things that truly exist in this reality are merely pain, suffering and futility. Listen, everywhere you look in this world, wherever there is light, there will always be shadows to be found as well. As long as there is a concept of victors, the vanquished will also exist. The selfish intent of wanting to preserve peace, initiates war and hatred is born in order to protect love. There are nexuses - casual relationships that cannot be separated."
 ];
+
+
 // store the list of words and the index of the word the player is currently typing
 let words = [];
 let wordIndex = 0;
 // the starting time
-let startTime = Date.now();
+// let startTime = Date.now();
+let startTime;
+let numberOfChar;
 // page elements
 const quoteElement = document.getElementById('quote');
 const messageElement = document.getElementById('message');
 const typedValueElement = document.getElementById('typed-value');
 
 // at the end of script.js
-document.getElementById('start').addEventListener('click', () => {
-  // get a quote
-  const quoteIndex = Math.floor(Math.random() * quotes.length);
-  const quote = quotes[quoteIndex];
-  // Put the quote into an array of words
-  words = quote.split(' ');
-  // reset the word index for tracking
-  wordIndex = 0;
+document.getElementById("typed-value").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        // get a quote
+        const quoteIndex = Math.floor(Math.random() * quotes.length);
+        const quote = quotes[quoteIndex];
+        numberOfChar = quote.split("").length;
+        // Put the quote into an array of words
+        words = quote.split(' ');
+        // reset the word index for tracking
+        wordIndex = 0;
 
-  // UI updates
-  // Create an array of span elements so we can set a class
-  // Convert into string and set as innerHTML on quote display
-  // Highlight the first word
-  const spanWords = words.map(function(word) { return `<span>${word} </span>`});
-  quoteElement.innerHTML = spanWords.join('');
-  quoteElement.childNodes[0].className = 'highlight';
+        // UI updates
+        // Create an array of span elements so we can set a class
+        // Convert into string and set as innerHTML on quote display
+        // Highlight the first word
+        const spanWords = words.map(function(word) { return `<span>${word} </span>`});
+        quoteElement.innerHTML = spanWords.join('');
+        quoteElement.childNodes[0].className = 'highlight';
 
-  // Clear any prior messages
-  messageElement.innerText = '';
+        // Clear any prior messages
+        messageElement.innerText = "";
 
-  // Setup the textbox, and set focus
-  typedValueElement.value = '';
-  typedValueElement.focus();
-  // set the event handler
+        // Setup the textbox, and set focus
+        typedValueElement.value = "";
+        // set the event handler
 
-  // Start the timer
-  startTime = new Date().getTime();
+        // Start the timer
+        startTime = new Date().getTime();
+    }
 });
 
-// at the end of script.js
-typedValueElement.addEventListener('input', () => {
+
+
+typedValueElement.addEventListener("input", () => {
   const currentWord = words[wordIndex];
   const typedValue = typedValueElement.value;
 
@@ -58,7 +64,7 @@ typedValueElement.addEventListener('input', () => {
     // end of sentence
     // Display success
     const elapsedTime = new Date().getTime() - startTime;
-    const message = `CONGRATULATIONS! You finished in ${elapsedTime / 1000} seconds.`;
+    const message = `Characters: ${numberOfChar}\nTime: ${elapsedTime / 1000}\nSpeed: ${Math.floor(numberOfChar / (elapsedTime * 5 / (1000 * 60)))} WPM.\n `;
     messageElement.innerText = message;
   } else if (typedValue.endsWith(' ') && typedValue.trim() === currentWord) {
     // end of word
@@ -71,13 +77,17 @@ typedValueElement.addEventListener('input', () => {
       wordElement.className = '';
     }
     // highlight the new word
-    quoteElement.childNodes[wordIndex].className = 'highlight';
+    quoteElement.childNodes[wordIndex].className = "highlight";
   } else if (currentWord.startsWith(typedValue)) {
     // currently correct
     // highlight the next word
-    typedValueElement.className = '';
+    typedValueElement.className = "";
   } else {
     // error state
-    typedValueElement.className = 'error';
+    typedValueElement.className = "error";
   }
 });
+
+
+
+typedValueElement.focus();
