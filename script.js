@@ -1,36 +1,45 @@
-const quotes = [
-    'When you have eliminated the impossible, whatever remains, however improbable, must be the truth.',
-    'There is nothing more deceptive than an obvious fact.',
-    'I ought to know by this time that when a fact appears to be opposed to a long train of deductions it invariably proves to be capable of bearing some other interpretation.',
-    'I never make exceptions. An exception disproves the rule.',
-    'What one man can invent another can discover.',
-    'Nothing clears up a case so much as stating it to another person.',
-    'Education never ends, Watson. It is a series of lessons, with the greatest for the last.',
-    "Wake up to reality! Nothing ever goes as planned in this accursed world. The longer you live, the more you realize that the only things that truly exist in this reality are merely pain, suffering and futility. Listen, everywhere you look in this world, wherever there is light, there will always be shadows to be found as well. As long as there is a concept of victors, the vanquished will also exist. The selfish intent of wanting to preserve peace, initiates war and hatred is born in order to protect love. There are nexuses - casual relationships that cannot be separated."
-];
-
-
-// store the list of words and the index of the word the player is currently typing
 let words = [];
 let wordIndex = 0;
-// the starting time
-// let startTime = Date.now();
+let jsonObj;
 let startTime;
 let numberOfChar;
+let quotes;
 // page elements
 const quoteElement = document.getElementById('quote');
 const messageElement = document.getElementById('message');
 const typedValueElement = document.getElementById('typed-value');
 
-// at the end of script.js
+
+function readFile(input) {
+    let file = input.files[0];
+    let reader = new FileReader();
+    reader.readAsText(file);
+
+    reader.onload = function() {
+        // console.log(reader.result);
+        jsonObj = JSON.parse(reader.result);
+        quotes = jsonObj.quotes  // [{text: "abc", source: "abc", id: 100, length: 3k}]
+    };
+
+    reader.onerror = function() {
+        console.log(reader.error);
+    };
+    return reader.result
+}
+
+
+// construct test
 document.getElementById("typed-value").addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
         // get a quote
         const quoteIndex = Math.floor(Math.random() * quotes.length);
         const quote = quotes[quoteIndex];
-        numberOfChar = quote.split("").length;
+
+        // numberOfChar = quote.split("").length;
+        numberOfChar = quote.length;
+
         // Put the quote into an array of words
-        words = quote.split(' ');
+        words = quote.text.split(" ");
         // reset the word index for tracking
         wordIndex = 0;
 
@@ -39,8 +48,8 @@ document.getElementById("typed-value").addEventListener("keydown", (e) => {
         // Convert into string and set as innerHTML on quote display
         // Highlight the first word
         const spanWords = words.map(function(word) { return `<span>${word} </span>`});
-        quoteElement.innerHTML = spanWords.join('');
-        quoteElement.childNodes[0].className = 'highlight';
+        quoteElement.innerHTML = spanWords.join("");
+        quoteElement.childNodes[0].className = "highlight";
 
         // Clear any prior messages
         messageElement.innerText = "";
@@ -53,7 +62,6 @@ document.getElementById("typed-value").addEventListener("keydown", (e) => {
         startTime = new Date().getTime();
     }
 });
-
 
 
 typedValueElement.addEventListener("input", () => {
@@ -87,7 +95,6 @@ typedValueElement.addEventListener("input", () => {
     typedValueElement.className = "error";
   }
 });
-
 
 
 typedValueElement.focus();
